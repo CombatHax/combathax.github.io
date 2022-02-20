@@ -91,13 +91,11 @@ function gameOver() {
     ctx.font = "16px Arial";
 }
 window.onkeydown = function(event) {
-    switch(event.key) {
-        case "w":
-            keys[0] = 1;
-            break;
-        case "s":
-            keys[1] = 1;
-            break;
+    if(event.key === "w" || event.key === "W" || event.key === "ArrowUp") {
+        keys[0] = 1;
+    }
+    if(event.key === "s" || event.key === "S" || event.key === "ArrowDown") {
+        keys[1] = 1;
     }
 }
 class Enemy {
