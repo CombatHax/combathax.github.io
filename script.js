@@ -4,13 +4,19 @@ let pos = 300;
 let move = 0;
 let lvl = 1;
 let enemies = [];
+let keys = [];
+let l = 0;
+let t = 0;
+let temp = 0;
+let met = 0;
 window.onload = function() {
     draw();
-    setInterval(function() {
+    l = setInterval(function() {
         lvl++;
-    }, 20000 / (lvl * 0.5));
+    }, 20000 * (lvl * 0.5));
 }
 function draw() {
+    met = 0;
     ctx.lineWidth = 1;
     ctx.beginPath();
     ctx.rect(0, 0, 1000, 600);
@@ -19,15 +25,20 @@ function draw() {
     ctx.strokeStyle = "blue";
     ctx.stroke();
     ctx.beginPath();
-    pos += move;
-    if (pos >= 600 - 5 || pos <= 0 + 5) {
-        if(move > 0) {
+    if(pos <= 0 || pos + 10 >= 600) {
+        move -= move * 2;
+    }
+    else {
+        if(keys[0]) {
             move = -5;
         }
-        else{
+        else if(keys[1]) {
             move = 5;
         }
     }
+    keys[0] = 0;
+    keys[1] = 0;
+    pos += move;
     ctx.arc(500, pos, 10, 0, 360);
     ctx.fillStyle = "blue";
     ctx.fill();
@@ -50,25 +61,42 @@ function draw() {
         let enemy = enemies[i];
         let hbox = enemy.htbox;
         if((pos >= hbox[1] && pos <= hbox[1] + hbox[3]) && (hbox[0] <= 500 && hbox[0] + hbox[2] >= 500)) {
-            ctx.clearRect(0, 0, 1000, 600);
-            ctx.beginPath();
-            ctx.font = "50px Arial";
-            ctx.fillStyle = "red";
-            ctx.fill();
-            ctx.fillText(`Game Over! Your score was ${lvl}`, 100, 400);
+            gameOver();
+            setTimeout(function() {
+                ctx.clearRect(0, 0, 1000, 600);
+                enemies.length = 0;
+                pos = 300;
+                move = 0;
+                lvl = 1;
+                clearInterval(l);
+                draw();
+                l = setInterval(function() {
+                    lvl++
+                }, 20000 * (lvl * 0.5));
+            }, 2000);
             return;
         }
     }
     ctx.clearRect(1000, 0, 100, 600);
     window.requestAnimationFrame(draw);
 }
+function gameOver() {
+    ctx.clearRect(0, 0, 1000, 600);
+    ctx.beginPath();
+    ctx.font = "50px Arial";
+    ctx.fillStyle = "red";
+    ctx.fill();
+    ctx.fillText(`Game Over! Your score was ${lvl}`, 100, 400);
+    ctx.beginPath();
+    ctx.font = "16px Arial";
+}
 window.onkeydown = function(event) {
     switch(event.key) {
         case "w":
-            move = -5
+            keys[0] = 1;
             break;
         case "s":
-            move = 5;
+            keys[1] = 1;
             break;
     }
 }
