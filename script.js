@@ -9,6 +9,7 @@ let l = 0;
 let t = 0;
 let temp = 0;
 let met = 0;
+console.log("Welcome to the console");
 window.onload = function() {
     draw();
     l = setInterval(function() {
