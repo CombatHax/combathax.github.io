@@ -59,8 +59,8 @@ function draw() {
     for(let i = 0; i < enemies.length; i++) {
         enemies[i].move();
         let enemy = enemies[i];
-        let hbox = enemy.htbox;
-        if((pos >= hbox[1] && pos <= hbox[1] + hbox[3]) && (hbox[0] <= 500 && hbox[0] + hbox[2] >= 500)) {
+        let dim = enemy.dim;
+        if((pos >= dim[1] && pos <= dim[1] + dim[3]) && (dim[0] <= 500 && dim[0] + dim[2] >= 500)) {
             gameOver();
             setTimeout(function() {
                 ctx.clearRect(0, 0, 1000, 600);
@@ -128,9 +128,5 @@ class Enemy {
                 this.htbox[i] = this.dim[i] + 20;
             }
         }
-        ctx.beginPath();
-        ctx.rect(this.htbox[0], this.htbox[1], this.htbox[2], this.htbox[3]);
-        ctx.strokeStyle = "#FFFFFF";
-        ctx.stroke();
     }
 }
